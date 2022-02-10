@@ -30,7 +30,7 @@ export const chatSlice = createSlice({
             state.messages = action.payload;
         },
         newMessage: (state, action: PayloadAction<ChatMessage>) => {
-            state.messages.push(action.payload);
+            state.messages.push(action.payload); // had to update the way array is updated
         },
     },
 });

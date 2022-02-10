@@ -9,7 +9,7 @@ interface IVoiceNoteBubble {
     createdAt: number;
 }
 
-const VoiceNoteBubble = ({
+const VoiceNoteBubble = React.memo(({
     isReceived,
     url,
     messageId,
@@ -36,7 +36,7 @@ const VoiceNoteBubble = ({
             </View>
         );
     }
-};
+});
 
 const styles = StyleSheet.create({
     receivedBubble: {

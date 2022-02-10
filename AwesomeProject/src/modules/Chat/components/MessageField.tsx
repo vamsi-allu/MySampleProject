@@ -17,7 +17,6 @@ import VoiceNoteBubble from './VoiceNoteBubble';
 const MessageField = ({ channel }: { channel: SendBird.GroupChannel }) => {
     const dispatch = useAppDispatch();
     const chatMessages = useAppSelector(state => state.chat.messages);
-    const [recentMesssage, setRecentMessage] = useState(null);
     const sendbird = useContext(SendbirdContext);
     const handlerId = useRef<string | null>(null);
     const userId = useAppSelector(state => state.auth.userId);
@@ -71,10 +70,6 @@ const MessageField = ({ channel }: { channel: SendBird.GroupChannel }) => {
             }
         };
     }, []);
-
-    useEffect(() => {
-        setRecentMessage(chatMessages[chatMessages.length - 1]);
-    }, [chatMessages]);
 
     const handleMessageReceived = (
         channel: SendBird.GroupChannel,
@@ -151,13 +146,14 @@ const MessageField = ({ channel }: { channel: SendBird.GroupChannel }) => {
     };
 
     const handleRenderChatBubble = (item: ChatMessage, index: number) => {
+        console.log(index);
         if (item.messageType === 'user') {
             if (item.sender.userId === userId) {
                 return (
                     <ChatBubble
                         isReceived={false}
                         message={item.message || ''}
-                        messageId={item.messageId}
+                        messageId={index}
                     />
                 );
             } else {
@@ -165,7 +161,7 @@ const MessageField = ({ channel }: { channel: SendBird.GroupChannel }) => {
                     <ChatBubble
                         isReceived={true}
                         message={item.message || ''}
-                        messageId={item.messageId}
+                        messageId={index}
                     />
                 );
             }
@@ -175,7 +171,7 @@ const MessageField = ({ channel }: { channel: SendBird.GroupChannel }) => {
                     <VoiceNoteBubble
                         isReceived={false}
                         url={item.url}
-                        messageId={item.messageId}
+                        messageId={index}
                         createdAt={item.createdAt}
                     />
                 );
@@ -184,7 +180,7 @@ const MessageField = ({ channel }: { channel: SendBird.GroupChannel }) => {
                     <VoiceNoteBubble
                         isReceived={true}
                         url={item.url}
-                        messageId={item.messageId}
+                        messageId={index}
                         createdAt={item.createdAt}
                     />
                 );
@@ -195,7 +191,7 @@ const MessageField = ({ channel }: { channel: SendBird.GroupChannel }) => {
                     <ImageBubble
                         isReceived={false}
                         url={item.url}
-                        messageId={item.messageId}
+                        messageId={index}
                         createdAt={item.createdAt}
                     />
                 );
@@ -204,7 +200,7 @@ const MessageField = ({ channel }: { channel: SendBird.GroupChannel }) => {
                     <ImageBubble
                         isReceived={true}
                         url={item.url}
-                        messageId={item.messageId}
+                        messageId={index}
                         createdAt={item.createdAt}
                     />
                 );
@@ -223,7 +219,6 @@ const MessageField = ({ channel }: { channel: SendBird.GroupChannel }) => {
                 ref={flatlistRef}
                 style={{ backgroundColor: '#eee' }}
                 data={chatMessages ?? []}
-                extraData={recentMesssage ?? ''}
                 keyExtractor={(item) => item.key?.toString()}
                 renderItem={({ item, index }) => handleRenderChatBubble(item, index)}
             />

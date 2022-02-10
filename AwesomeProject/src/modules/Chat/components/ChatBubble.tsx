@@ -7,7 +7,7 @@ interface IChatBubble {
     messageId: number;
 }
 
-const ChatBubble = ({ isReceived, message, messageId }: IChatBubble) => {
+const ChatBubble = React.memo(({ isReceived, message, messageId }: IChatBubble) => {
     if (!isReceived) {
         return (
             <View style={styles.sentBubble} key={messageId}>
@@ -25,7 +25,7 @@ const ChatBubble = ({ isReceived, message, messageId }: IChatBubble) => {
             </View>
         );
     }
-};
+});
 
 const styles = StyleSheet.create({
     receivedBubble: {
